@@ -96,20 +96,20 @@ class ToolbarTests: BaseTestCase {
         XCTAssertEqual(value as? String, "", "The url has not been removed correctly")
     }
 
-    //Check that that after scrolling on a page, the URL bar is hidden. Tapping one on the status bar will reveal the URL bar, tapping again on the status will scroll to the top
+    //Check that after scrolling on a page, the URL bar is hidden. Tapping one on the status bar will reveal the URL bar, tapping again on the status will scroll to the top
     func testRevealToolbarWhenTappingOnStatusbar(){
         //Workaround when testing on iPhone. If the orientation is in landscape on iPhone the tests will fail.
         if !iPad() {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
-        waitforExistence(app/*@START_MENU_TOKEN@*/.buttons["HomePanels.TopSites"]/*[[".otherElements[\"Panel Chooser\"]",".buttons[\"Top sites\"]",".buttons[\"HomePanels.TopSites\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/)
+        waitforExistence(app.buttons["HomePanels.TopSites"])
         navigator.openURL(website1["url"]!, waitForLoading: true)
-        waitforExistence(app/*@START_MENU_TOKEN@*/.buttons["TabLocationView.pageOptionsButton"]/*[[".buttons[\"Page Options Menu\"]",".buttons[\"TabLocationView.pageOptionsButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/)
+        let pageActionMenuButton = app.buttons["TabLocationView.pageOptionsButton"]
+        waitforExistence(pageActionMenuButton)
         let statusbarElement = app.statusBars.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
         XCTAssertTrue(statusbarElement.isHittable)
         app.swipeUp()
         let hiddenStatusbarElement = app.statusBars.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
-        let pageActionMenuButton = app/*@START_MENU_TOKEN@*/.buttons["TabLocationView.pageOptionsButton"]/*[[".buttons[\"Page Options Menu\"]",".buttons[\"TabLocationView.pageOptionsButton\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
         XCTAssertFalse(pageActionMenuButton.exists)
         hiddenStatusbarElement.tap()
         XCTAssertTrue(hiddenStatusbarElement.isHittable)
@@ -130,10 +130,9 @@ class ToolbarTests: BaseTestCase {
         navigator.openURL(PDFWebsite["url"]!)
         waitUntilPageLoad()
 
-      
         // Swipe Up and check that the toolbar is not available and Down and it is available again
         let toolbarElement = app.buttons["TopTabsViewController.tabsButton"]
-        let element = app/*@START_MENU_TOKEN@*/.webViews/*[[".otherElements[\"Web content\"].webViews",".otherElements[\"contentView\"].webViews",".webViews"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
+        let element = app.webViews.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
         element.swipeUp()
         XCTAssertFalse(toolbarElement.isHittable)
 
@@ -159,7 +158,7 @@ class ToolbarTests: BaseTestCase {
 
         // Swipe Up and check that the toolbar is not available and Down and it is available again
         let toolbarElement = app.buttons["TopTabsViewController.tabsButton"]
-        let element = app/*@START_MENU_TOKEN@*/.webViews/*[[".otherElements[\"Web content\"].webViews",".otherElements[\"contentView\"].webViews",".webViews"],[[[-1,2],[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
+        let element = app.webViews.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
         element.swipeUp()
         XCTAssertFalse(toolbarElement.isHittable)
 
