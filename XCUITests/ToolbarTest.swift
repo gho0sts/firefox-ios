@@ -59,9 +59,9 @@ class ToolbarTests: BaseTestCase {
 
         // Open new tab and then go back to previous tab to test navigation buttons.
         if iPad() {
-            waitforExistence(app.buttons["TopTabsViewController.tabsButton"], timeout: 5)
+            waitForExistence(app.buttons["TopTabsViewController.tabsButton"], timeout: 5)
         } else {
-            waitforExistence(app.buttons["URLBarView.tabsButton"], timeout: 5)
+            waitForExistence(app.buttons["URLBarView.tabsButton"], timeout: 5)
         }
         navigator.goto(TabTray)
         waitForExistence(app.collectionViews.cells[website1["label"]!])
@@ -75,9 +75,9 @@ class ToolbarTests: BaseTestCase {
 
         navigator.nowAt(BrowserTab)
         if iPad() {
-            waitforExistence(app.buttons["TopTabsViewController.tabsButton"], timeout: 5)
+            waitForExistence(app.buttons["TopTabsViewController.tabsButton"], timeout: 5)
         } else {
-            waitforExistence(app.buttons["URLBarView.tabsButton"], timeout: 5)
+            waitForExistence(app.buttons["URLBarView.tabsButton"], timeout: 5)
         }
         navigator.goto(TabTray)
 
