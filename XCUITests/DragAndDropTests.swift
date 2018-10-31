@@ -16,22 +16,6 @@ let twitterTitle = "Twitter"
 
 class DragAndDropTests: BaseTestCase {
 
-    let testWithDB = ["testTryDragAndDropHistoryToURLBar","testTryDragAndDropBookmarkToURLBar","testDragAndDropBookmarkEntry","testDragAndDropHistoryEntry"]
-
-    // This DDBB contains those 4 websites listed in the name
-    let historyAndBookmarksDB = "browserYoutubeTwitterMozillaExample.db"
-
-    override func setUp() {
-        // Test name looks like: "[Class testFunc]", parse out the function name
-        let parts = name.replacingOccurrences(of: "]", with: "").split(separator: " ")
-        let key = String(parts[1])
-        if testWithDB.contains(key) {
-            // for the current test name, add the db fixture used
-            launchArguments = [LaunchArguments.SkipIntro, LaunchArguments.SkipWhatsNew, LaunchArguments.LoadDatabasePrefix + historyAndBookmarksDB]
-        }
-        super.setUp()
-    }
-
     override func tearDown() {
         XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         super.tearDown()
@@ -139,34 +123,51 @@ fileprivate extension BaseTestCase {
     }
 }
 
-    class DragAndDropTestIpad: IpadOnlyTestCase {
-        func testRearrangeTabs() {
-            if skipPlatform { return }
-
-            openTwoWebsites()
-            checkTabsOrder(dragAndDropTab: false, firstTab: firstWebsite.tabName, secondTab: secondWebsite.tabName)
-            // Drag first tab on the second one
-            dragAndDrop(dragElement: app.collectionViews.cells[firstWebsite.tabName], dropOnElement: app.collectionViews.cells[secondWebsite.tabName])
-            checkTabsOrder(dragAndDropTab: true, firstTab: secondWebsite.tabName, secondTab: firstWebsite.tabName)
-            // Check that focus is kept on last website open
-            XCTAssert(secondWebsite.url.contains(app.textFields["url"].value! as! String), "The tab has not been dropped correctly")
+class DragAndDropTestIpad: IpadOnlyTestCase {
+        
+    let testWithDB = ["testTryDragAndDropHistoryToURLBar","testTryDragAndDropBookmarkToURLBar","testDragAndDropBookmarkEntry","testDragAndDropHistoryEntry"]
+        
+        // This DDBB contains those 4 websites listed in the name
+    let historyAndBookmarksDB = "browserYoutubeTwitterMozillaExample.db"
+        
+    override func setUp() {
+        // Test name looks like: "[Class testFunc]", parse out the function name
+        let parts = name.replacingOccurrences(of: "]", with: "").split(separator: " ")
+        let key = String(parts[1])
+        if testWithDB.contains(key) {
+            // for the current test name, add the db fixture used
+                launchArguments = [LaunchArguments.SkipIntro, LaunchArguments.SkipWhatsNew, LaunchArguments.LoadDatabasePrefix + historyAndBookmarksDB]
         }
+        super.setUp()
+    }
 
-        func testRearrangeTabsLandscape() {
-            if skipPlatform { return }
+    func testRearrangeTabs() {
+        if skipPlatform { return }
+        
+        openTwoWebsites()
+        checkTabsOrder(dragAndDropTab: false, firstTab: firstWebsite.tabName, secondTab: secondWebsite.tabName)
+        // Drag first tab on the second one
+        dragAndDrop(dragElement: app.collectionViews.cells[firstWebsite.tabName], dropOnElement: app.collectionViews.cells[secondWebsite.tabName])
+        checkTabsOrder(dragAndDropTab: true, firstTab: secondWebsite.tabName, secondTab: firstWebsite.tabName)
+        // Check that focus is kept on last website open
+        XCTAssert(secondWebsite.url.contains(app.textFields["url"].value! as! String), "The tab has not been dropped correctly")
+    }
 
-            // Set the device in landscape mode
-            XCUIDevice.shared.orientation = UIDeviceOrientation.landscapeLeft
-            openTwoWebsites()
-            checkTabsOrder(dragAndDropTab: false, firstTab: firstWebsite.tabName, secondTab: secondWebsite.tabName)
+    func testRearrangeTabsLandscape() {
+        if skipPlatform { return }
+        
+        // Set the device in landscape mode
+        XCUIDevice.shared.orientation = UIDeviceOrientation.landscapeLeft
+        openTwoWebsites()
+        checkTabsOrder(dragAndDropTab: false, firstTab: firstWebsite.tabName, secondTab: secondWebsite.tabName)
 
-            // Rearrange the tabs via drag home tab and drop it on twitter tab
-            dragAndDrop(dragElement: app.collectionViews.cells[firstWebsite.tabName], dropOnElement: app.collectionViews.cells[secondWebsite.tabName])
-
-            checkTabsOrder(dragAndDropTab: true, firstTab: secondWebsite.tabName, secondTab: firstWebsite.tabName)
-            // Check that focus is kept on last website open
-            XCTAssert(secondWebsite.url.contains(app.textFields["url"].value! as! String), "The tab has not been dropped correctly")
-        }
+        // Rearrange the tabs via drag home tab and drop it on twitter tab
+        dragAndDrop(dragElement: app.collectionViews.cells[firstWebsite.tabName], dropOnElement: app.collectionViews.cells[secondWebsite.tabName])
+        
+        checkTabsOrder(dragAndDropTab: true, firstTab: secondWebsite.tabName, secondTab: firstWebsite.tabName)
+        // Check that focus is kept on last website open
+        XCTAssert(secondWebsite.url.contains(app.textFields["url"].value! as! String), "The tab has not been dropped correctly")
+    }
 
         func testDragDropToInvalidArea() {
             if skipPlatform { return }
