@@ -6,10 +6,9 @@ import XCTest
 
 class DisplaySettingTests: BaseTestCase {
 
-
     func testDisplaySettingsDefault() {
         navigator.goto(DisplaySettings)
-        waitforExistence(app.navigationBars["Display"])
+        waitForExistence(app.navigationBars["Display"])
         XCTAssertTrue(app.tables["DisplayTheme.Setting.Options"].exists)
         let switchValue = app.switches["DisplaySwitchValue"].value!
         XCTAssertEqual(switchValue as! String, "0")
@@ -19,22 +18,22 @@ class DisplaySettingTests: BaseTestCase {
 
     func testChangeSwitchAutomatically() {
         navigator.goto(DisplaySettings)
-        waitforExistence(app.switches["Automatically, Switch automatically based on screen brightness"])
+        waitForExistence(app.switches["Automatically, Switch automatically based on screen brightness"])
         navigator.performAction(Action.SelectAutomatically)
-        waitforExistence(app.sliders["0%"])
+        waitForExistence(app.sliders["0%"])
         XCTAssertFalse(app.tables.cells.staticTexts["Dark"].exists)
 
         // Going back to Settings and Display settings keeps the value
         navigator.goto(SettingsScreen)
         navigator.goto(DisplaySettings)
-        waitforExistence(app.switches["DisplaySwitchValue"])
+        waitForExistence(app.switches["DisplaySwitchValue"])
         let switchValue = app.switches["DisplaySwitchValue"].value!
         XCTAssertEqual(switchValue as! String, "1")
         XCTAssertFalse(app.tables.cells.staticTexts["Dark"].exists)
 
         // Unselect the Automatic mode
         navigator.performAction(Action.SelectAutomatically)
-        waitforExistence(app.tables.cells.staticTexts["Light"])
+        waitForExistence(app.tables.cells.staticTexts["Light"])
         XCTAssertTrue(app.tables.cells.staticTexts["Dark"].exists)
         // Needed so that the change is applied when closing the app for next test
         navigator.goto(SettingsScreen)
