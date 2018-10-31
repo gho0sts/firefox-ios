@@ -102,10 +102,10 @@ class ToolbarTests: BaseTestCase {
         if !iPad() {
             XCUIDevice.shared.orientation = UIDeviceOrientation.portrait
         }
-        waitforExistence(app.buttons["HomePanels.TopSites"])
+        waitForExistence(app.buttons["HomePanels.TopSites"])
         navigator.openURL(website1["url"]!, waitForLoading: true)
         let pageActionMenuButton = app.buttons["TabLocationView.pageOptionsButton"]
-        waitforExistence(pageActionMenuButton)
+        waitForExistence(pageActionMenuButton)
         let statusbarElement = app.statusBars.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
         XCTAssertTrue(statusbarElement.isHittable)
         app.swipeUp()
