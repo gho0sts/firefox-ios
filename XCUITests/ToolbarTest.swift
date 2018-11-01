@@ -105,7 +105,7 @@ class ToolbarTests: BaseTestCase {
         waitForExistence(app.buttons["HomePanels.TopSites"])
         navigator.openURL(website1["url"]!, waitForLoading: true)
         let pageActionMenuButton = app.buttons["TabLocationView.pageOptionsButton"]
-        waitForExistence(pageActionMenuButton)
+        waitForExistence(pageActionMenuButton, timeout: 5)
         let statusbarElement = app.statusBars.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
         XCTAssertTrue(statusbarElement.isHittable)
         app.swipeUp()
